@@ -4,7 +4,7 @@ import org.skypro.skyshop.search.Searchable;
 
 public abstract class Product implements Searchable {
 
-    private String productName;
+    private final String productName;
 
     protected Product(String productName) {
         this.productName = productName;
