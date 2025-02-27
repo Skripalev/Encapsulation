@@ -15,11 +15,24 @@ public class SimpleProduct extends Product {
 
     @Override
     public boolean isSpecial() {
+
         return false;
     }
 
     @Override
     public String getProductName() {
+
         return super.getProductName();
     }
+
+    @Override
+    public String getName() {
+        return "";
+    }
+
+    @Override
+    public String getStringRepresentation() {
+        return super.getStringRepresentation();
+    }
+
 }
