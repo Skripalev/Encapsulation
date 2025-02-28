@@ -1,29 +1,29 @@
 package org.skypro.skyshop.product;
 
-public class FixPriceProduct extends Product {
-    private static final int FIXED_PRICE = 100;
+public class DiscountedProduct extends Product {
+    private final int basePrice;
+    private final int discount;
 
-    public FixPriceProduct(String productName) {
+    public DiscountedProduct(String productName, int basePrice, int discount) {
         super(productName);
-
+        this.basePrice = basePrice;
+        this.discount = discount;
     }
 
     @Override
     public boolean isSpecial() {
-
         return true;
     }
 
     @Override
     public int getProductPrice() {
-
-        return FIXED_PRICE;
+        return basePrice - (basePrice * discount / 100);
     }
+
 
     @Override
     public String toString() {
-
-        return getProductName() + ": Фиксированная цена " + FIXED_PRICE;
+        return getProductName() + ": " + getProductPrice() + " (" + discount + "%)";
     }
 
     @Override
@@ -35,5 +35,5 @@ public class FixPriceProduct extends Product {
     public String getStringRepresentation() {
         return super.getStringRepresentation();
     }
-
 }
+

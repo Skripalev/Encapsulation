@@ -21,7 +21,6 @@ public class SearchEngine {
     public Searchable[] search(String query) {
         Searchable[] results = new Searchable[5];
         int resultCount = 0;
-
         for (int i = 0; i < count && resultCount < 5; i++) {
             if (searchables[i].getSearchTerm().contains(query)) {
                 results[resultCount] = searchables[i];
