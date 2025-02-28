@@ -1,9 +1,6 @@
-package org.skypro.skyshop.ProductDiscount;
-
-import org.skypro.skyshop.product.Product;
+package org.skypro.skyshop.product;
 
 public class DiscountedProduct extends Product {
-
     private final int basePrice;
     private final int discount;
 
@@ -28,4 +25,15 @@ public class DiscountedProduct extends Product {
     public String toString() {
         return getProductName() + ": " + getProductPrice() + " (" + discount + "%)";
     }
+
+    @Override
+    public String getName() {
+        return "";
+    }
+
+    @Override
+    public String getStringRepresentation() {
+        return super.getStringRepresentation();
+    }
 }
+
