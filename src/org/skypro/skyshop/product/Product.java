@@ -1,13 +1,20 @@
 package org.skypro.skyshop.product;
 
+
 import org.skypro.skyshop.search.Searchable;
+
 
 public abstract class Product implements Searchable {
     private final String productName;
 
     protected Product(String productName) {
         this.productName = productName;
+        if (!productName.isBlank()) {
+        } else {
+            throw new IllegalArgumentException("Введите корректное значение наименования!");
+        }
     }
+
 
     public String getProductName() {
 
@@ -19,7 +26,7 @@ public abstract class Product implements Searchable {
     }
 
     public String getContentType() {
-        return "PRODUCT";
+        return "PRODUCT: ";
     }
 
     public abstract int getProductPrice();

@@ -1,5 +1,6 @@
 package org.skypro.skyshop.product;
 
+
 public class DiscountedProduct extends Product {
     private final int basePrice;
     private final int discount;
@@ -8,6 +9,14 @@ public class DiscountedProduct extends Product {
         super(productName);
         this.basePrice = basePrice;
         this.discount = discount;
+        if (basePrice >= 1) {
+        } else {
+            throw new IllegalArgumentException("Введите корректное значение базовой цены!");
+        }
+        if (discount >= 0 && discount <= 100) {
+        } else {
+            throw new IllegalArgumentException("Введите корректное значение скидки!");
+        }
     }
 
     @Override
