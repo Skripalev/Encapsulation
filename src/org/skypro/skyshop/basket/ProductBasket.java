@@ -3,7 +3,6 @@ package org.skypro.skyshop.basket;
 import org.skypro.skyshop.product.Product;
 
 public class ProductBasket {
-
     private final Product[] products;
     private int count;
 
