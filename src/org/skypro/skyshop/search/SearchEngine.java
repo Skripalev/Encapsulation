@@ -1,5 +1,7 @@
 package org.skypro.skyshop.search;
 
+import java.nio.charset.CharacterCodingException;
+
 public class SearchEngine {
     private final Searchable[] searchables;
     private int count;
@@ -49,7 +51,7 @@ public class SearchEngine {
             }
         }
         if (mostRelevant == null) {
-            throw new BestResultNotFound("Не найден подходящий объект для поискового запроса: " + search);
+            throw new BestResultNotFound("Не найден подходящий объект для поискового запроса: ");
         }
         return mostRelevant;
     }
