@@ -10,7 +10,7 @@ import org.skypro.skyshop.search.BestResultNotFound;
 import org.skypro.skyshop.search.SearchEngine;
 import org.skypro.skyshop.search.Searchable;
 
-import java.util.Arrays;
+import java.util.List;
 
 public class App {
     public static void main(String[] args) {
@@ -24,9 +24,9 @@ public class App {
         basket.printBasket();
 
         Article article1 = new Article("Как выбрать Яблоко?", "Выбирайте яблоки по цвету, без вмятин.");
-        Article article2 = new Article("Как выбрать Манго?", "Выбирайте наугад, я понятия не иммею как.");
-        Article article3 = new Article("Как выбрать Банан?", "Банан следует брать желтого цвета, желтый цвет сведетельствует о его спелости.");
-        SearchEngine searchEngine = new SearchEngine(9);
+        Article article2 = new Article("Как выбрать Манго?", "Выбирайте наугад, я понятия не имею как.");
+        Article article3 = new Article("Как выбрать Банан?", "Банан следует брать желтого цвета, желтый цвет свидетельствует о его спелости.");
+        SearchEngine searchEngine = new SearchEngine();
         searchEngine.add(product1);
         searchEngine.add(product2);
         searchEngine.add(product3);
@@ -35,14 +35,29 @@ public class App {
         searchEngine.add(article3);
 
         System.out.println("=== Поиск по запросу \"Яблоко\" ===");
-        Searchable[] results1 = searchEngine.search("Яблоко");
-        System.out.println(Arrays.toString(results1));
+        List<Searchable> results1 = searchEngine.search("Яблоко");
+        results1.forEach(result -> System.out.println(result.getSearchTerm()));
+
         System.out.println("\n=== Поиск по запросу \"Банан\" ===");
-        Searchable[] results2 = searchEngine.search("Банан");
-        System.out.println(Arrays.toString(results2));
+        List<Searchable> results2 = searchEngine.search("Банан");
+        results2.forEach(result -> System.out.println(result.getSearchTerm()));
+
         System.out.println("Общая стоимость корзины: " + basket.getTotalCost());
         System.out.println("Есть ли в корзине Банан? " + basket.containsProduct("Банан"));
         System.out.println("Есть ли в корзине Манго? " + basket.containsProduct("Манго"));
+
+        // Удаление продукта по имени
+        List<Product> removedProducts = basket.removeProductByName("Банан");
+        System.out.println("Удаленные продукты: " + removedProducts);
+        basket.printBasket();
+
+        // Удаление несуществующего продукта
+        List<Product> removedNonExistent = basket.removeProductByName("Апельсин");
+        if (removedNonExistent.isEmpty()) {
+            System.out.println("Список пуст");
+        }
+        basket.printBasket();
+
         basket.clearBasket();
         basket.printBasket();
         System.out.println("Общая стоимость пустой корзины: " + basket.getTotalCost());
@@ -80,8 +95,6 @@ public class App {
         } catch (BestResultNotFound e) {
             System.out.println("Ошибка: " + e.getMessage());
         }
-
     }
-
 }
 

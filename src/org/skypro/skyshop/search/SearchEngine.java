@@ -1,35 +1,26 @@
 package org.skypro.skyshop.search;
 
-import java.nio.charset.CharacterCodingException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class SearchEngine {
-    private final Searchable[] searchables;
-    private int count;
+    private final List<Searchable> searchables;
 
-    public SearchEngine(int capacity) {
-        this.searchables = new Searchable[capacity];
-        this.count = 0;
+    public SearchEngine() {
+        this.searchables = new ArrayList<>();
     }
 
     public void add(Searchable searchable) {
-        if (count < searchables.length) {
-            searchables[count] = searchable;
-            count++;
-        } else {
-            System.out.println("Невозможно добавить элемент: массив переполнен");
-        }
+        searchables.add(searchable);
     }
 
-    public Searchable[] search(String query) {
-        Searchable[] results = new Searchable[5];
-        int resultCount = 0;
-        for (int i = 0; i < count && resultCount < 5; i++) {
-            if (searchables[i].getSearchTerm().contains(query)) {
-                results[resultCount] = searchables[i];
-                resultCount++;
+    public List<Searchable> search(String query) {
+        List<Searchable> results = new ArrayList<>();
+        for (Searchable searchable : searchables) {
+            if (searchable.getSearchTerm().contains(query)) {
+                results.add(searchable);
             }
         }
-
         return results;
     }
 
@@ -39,19 +30,16 @@ public class SearchEngine {
         }
         Searchable mostRelevant = null;
         int maxCount = -1;
-        for (int i = 0; i < count; i++) {
-            Searchable searchable = searchables[i];
-            if (searchable != null) {
-                String term = searchable.getSearchTerm();
-                int countOccurrences = countSubstringOccurrences(term, search);
-                if (countOccurrences > maxCount) {
-                    maxCount = countOccurrences;
-                    mostRelevant = searchable;
-                }
+        for (Searchable searchable : searchables) {
+            String term = searchable.getSearchTerm();
+            int countOccurrences = countSubstringOccurrences(term, search);
+            if (countOccurrences > maxCount) {
+                maxCount = countOccurrences;
+                mostRelevant = searchable;
             }
         }
         if (mostRelevant == null) {
-            throw new BestResultNotFound("Не найден подходящий объект для поискового запроса: ");
+            throw new BestResultNotFound("Не найден подходящий объект для поискового запроса: " + search);
         }
         return mostRelevant;
     }
@@ -67,5 +55,3 @@ public class SearchEngine {
         return count;
     }
 }
-
-
