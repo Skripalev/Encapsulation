@@ -11,6 +11,7 @@ import org.skypro.skyshop.search.SearchEngine;
 import org.skypro.skyshop.search.Searchable;
 
 import java.util.List;
+import java.util.Map;
 
 public class App {
     public static void main(String[] args) {
@@ -35,23 +36,23 @@ public class App {
         searchEngine.add(article3);
 
         System.out.println("=== Поиск по запросу \"Яблоко\" ===");
-        List<Searchable> results1 = searchEngine.search("Яблоко");
-        results1.forEach(result -> System.out.println(result.getSearchTerm()));
+        Map<String, Searchable> results1 = searchEngine.search("Яблоко");
+        results1.forEach((name, searchable) -> System.out.println(name + ": " + searchable.getSearchTerm()));
 
         System.out.println("\n=== Поиск по запросу \"Банан\" ===");
-        List<Searchable> results2 = searchEngine.search("Банан");
-        results2.forEach(result -> System.out.println(result.getSearchTerm()));
+        Map<String, Searchable> results2 = searchEngine.search("Банан");
+        results2.forEach((name, searchable) -> System.out.println(name + ": " + searchable.getSearchTerm()));
 
         System.out.println("Общая стоимость корзины: " + basket.getTotalCost());
         System.out.println("Есть ли в корзине Банан? " + basket.containsProduct("Банан"));
         System.out.println("Есть ли в корзине Манго? " + basket.containsProduct("Манго"));
 
-        // Удаление продукта по имени
+
         List<Product> removedProducts = basket.removeProductByName("Банан");
         System.out.println("Удаленные продукты: " + removedProducts);
         basket.printBasket();
 
-        // Удаление несуществующего продукта
+
         List<Product> removedNonExistent = basket.removeProductByName("Апельсин");
         if (removedNonExistent.isEmpty()) {
             System.out.println("Список пуст");
