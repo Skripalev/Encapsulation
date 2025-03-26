@@ -1,26 +1,38 @@
 package org.skypro.skyshop.search;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
+import java.util.Collections;
+import java.util.Set;
+import java.util.TreeSet;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class SearchEngine {
-    private final List<Searchable> searchables;
+    private final Set<Searchable> searchables;
+    private boolean caseSensitive = false;
 
     public SearchEngine() {
-        this.searchables = new ArrayList<>();
+        this.searchables = ConcurrentHashMap.newKeySet();
     }
 
     public void add(Searchable searchable) {
+        if (searchable == null) {
+            throw new IllegalArgumentException("Обьект не может быть null!");
+        }
         searchables.add(searchable);
     }
 
-    public Map<String, Searchable> search(String query) {
-        Map<String, Searchable> results = new TreeMap<>();
+    public Set<Searchable> search(String query) {
+        if (query == null || query.isEmpty()) {
+            return Collections.emptySortedSet();
+        }
+        String searchQuery = caseSensitive ? query : query.toLowerCase();
+        Set<Searchable> results = new TreeSet<>(new SearchableComparator());
         for (Searchable searchable : searchables) {
-            if (searchable.getSearchTerm().contains(query)) {
-                results.put(searchable.getName(), searchable);
+            String term = caseSensitive ?
+                    searchable.getSearchTerm() :
+                    searchable.getSearchTerm().toLowerCase();
+
+            if (term.contains(searchQuery)) {
+                results.add(searchable);
             }
         }
         return results;

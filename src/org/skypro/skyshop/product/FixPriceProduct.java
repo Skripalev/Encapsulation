@@ -29,7 +29,7 @@ public class FixPriceProduct extends Product {
 
     @Override
     public String getName() {
-        return "";
+        return getProductName();
     }
 
     @Override
