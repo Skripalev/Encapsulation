@@ -1,9 +1,12 @@
 package org.skypro.skyshop.search;
 
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Set;
 import java.util.TreeSet;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class SearchEngine {
     private final Set<Searchable> searchables;
@@ -24,18 +27,25 @@ public class SearchEngine {
         if (query == null || query.isEmpty()) {
             return Collections.emptySortedSet();
         }
-        String searchQuery = caseSensitive ? query : query.toLowerCase();
-        Set<Searchable> results = new TreeSet<>(new SearchableComparator());
-        for (Searchable searchable : searchables) {
-            String term = caseSensitive ?
-                    searchable.getSearchTerm() :
-                    searchable.getSearchTerm().toLowerCase();
-
-            if (term.contains(searchQuery)) {
-                results.add(searchable);
-            }
+        String searchQuery;
+        if (caseSensitive) {
+            searchQuery = query;
+        } else {
+            searchQuery = query.toLowerCase();
         }
-        return results;
+        return searchables.stream()
+                .filter(searchable -> {
+                    String term;
+                    if (caseSensitive) {
+                        term = searchable.getSearchTerm();
+                    } else {
+                        term = searchable.getSearchTerm().toLowerCase();
+                    }
+                    return term.contains(searchQuery);
+                })
+                .collect(Collectors.toCollection(
+                        () -> new TreeSet<>(new SearchableComparator())
+                ));
     }
 
     public Searchable findMostRelevant(String search) throws BestResultNotFound {

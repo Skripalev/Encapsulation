@@ -3,6 +3,7 @@ package org.skypro.skyshop.basket;
 import org.skypro.skyshop.product.Product;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -20,31 +21,29 @@ public class ProductBasket {
     }
 
     public int getTotalCost() {
-        int totalCost = 0;
-        for (List<Product> productList : products.values()) {
-            for (Product product : productList) {
-                totalCost += product.getProductPrice();
-            }
-        }
-        return totalCost;
+        return products.values().stream()
+                .flatMap(Collection::stream)
+                .mapToInt(Product::getProductPrice)
+                .sum();
     }
 
     public void printBasket() {
         if (products.isEmpty()) {
             System.out.println("В корзине пусто");
         } else {
-            int specialCount = 0;
-            for (List<Product> productList : products.values()) {
-                for (Product product : productList) {
-                    System.out.println(product.toString());
-                    if (product.isSpecial()) {
-                        specialCount++;
-                    }
-                }
-            }
+            products.values().stream()
+                    .flatMap(Collection::stream)
+                    .forEach(System.out::println);
             System.out.println("Итого: " + getTotalCost());
-            System.out.println("Специальных товаров: " + specialCount);
+            System.out.println("Специальных товаров: " + getSpecialCount());
         }
+    }
+
+    private long getSpecialCount() {
+        return products.values().stream()
+                .flatMap(Collection::stream)
+                .filter(Product::isSpecial)
+                .count();
     }
 
     public boolean containsProduct(String productName) {
@@ -59,4 +58,5 @@ public class ProductBasket {
         List<Product> removedProducts = products.remove(name);
         return removedProducts != null ? removedProducts : Collections.emptyList();
     }
+
 }
